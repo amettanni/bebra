@@ -4,7 +4,7 @@ from typing import Union
 from aiohttp import ClientSession
 from loguru import logger
 from web3 import AsyncWeb3
-# from web3.middleware import async_geth_poa_middleware
+from web3.middleware import async_geth_poa_middleware
 from web3.types import TxParams
 from web3.exceptions import TransactionNotFound
 
@@ -24,12 +24,12 @@ class Account:
         self.rpc = RPC[chain]['rpc']
 
         self.proxy = f"http://{proxy}" if proxy else ""
-        # self.request_kwargs = {'proxy': f'http://{proxy}'} if proxy else {}
+        self.request_kwargs = {'proxy': f'http://{proxy}'} if proxy else {}
             
         self.w3 = AsyncWeb3(
             AsyncWeb3.AsyncHTTPProvider(self.rpc),
-            # middlewares=[async_geth_poa_middleware],
-            # request_kwargs=self.request_kwargs
+            middlewares=[async_geth_poa_middleware],
+            request_kwargs=self.request_kwargs
         )
 
         self.address = self.w3.eth.account.from_key(private_key).address
