@@ -1,23 +1,17 @@
 class MainSettings:
-    MAX_GAS = 100
-
-    GAS_MULTIPLAYER = 1
-
     RANDOM_WALLETS = True
 
     REMOVE_WALLET = False
 
     USE_PROXY = True
 
-    START_PERIOD = [1, 5]
+    START_PERIOD = [60, 180]
     
     REPEATS_PER_WALLET = 1
 
-    SLEEP_AFTER_WORK = [180, 400]
+    SLEEP_AFTER_WORK = [2000, 3000]
 
     SLEEP_INSIDE_MODULE = [30, 120]
-
-    SLIPPAGE = 1
 
     GAS_LIMIT = 500000
 
@@ -50,13 +44,13 @@ class MainSettings:
 class ModulesSettings:
     
     class Bex:
-        PERCENTS = [10, 20]
+        PERCENTS = [50, 90]
         LOW_PERCENTS = [1, 5]
 
 
     class BerpsPool:
-        PERCENTS = [10, 30]
+        PERCENTS = [50, 90]
 
 
     class Bend:
-        PERCENTS = [20, 40]
+        PERCENTS = [50, 90]

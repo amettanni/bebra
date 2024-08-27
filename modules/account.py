@@ -156,11 +156,6 @@ class Account:
         return tx
 
     async def sign(self, transaction):
-        # gas = await self.w3.eth.estimate_gas(transaction)
-        # gas = int(gas * SETTINGS.GAS_MULTIPLAYER)
-
-        # transaction.update({'gas': gas})
-
         signed_tx = self.w3.eth.account.sign_transaction(transaction, self.private_key)
         return signed_tx
 
