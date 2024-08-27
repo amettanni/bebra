@@ -60,12 +60,19 @@ class BerpsPool(Account):
     async def deposit_bhoney(self):
         try:
             balance, balance_wei, decimal = await self.get_balance(BERPS_POOL_CONTRACTS['BHONEY'])
+
+            balance_int = int(balance)
+            balance_int_wei = balance_int * (10**decimal)
+
+            if balance == 0:
+                self.log_send(f'Not enough balance = {balance} bHONEY to deposit on Bera Rewards Vault.')
+                return False
         
-            self.log_send(f'Deposit {balance} bHONEY on Bera Rewards Vault.')
+            self.log_send(f'Deposit {balance_int} bHONEY on Bera Rewards Vault.')
 
             tx_data = await self.get_tx_data()
             
-            tx = await self.berachain_rewards_vault_contract.functions.stake(balance_wei).build_transaction(tx_data)
+            tx = await self.berachain_rewards_vault_contract.functions.stake(balance_int_wei).build_transaction(tx_data)
             
             tx_status = await self.execute_transaction(tx)
             
