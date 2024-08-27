@@ -8,7 +8,7 @@ class BerpsPool(Account):
         super().__init__(account_id, private_key)
         
         self.berps_pool_contract = self.get_contract(BERPS_POOL_CONTRACTS['BHONEY'], BERPS_POOL_ABI)
-        self.berachain_rewards_vault_contract = self.get_contract(BERPS_POOL_CONTRACTS['BHONEY'], BERA_REWARDS_VAULT_ABI)
+        self.berachain_rewards_vault_contract = self.get_contract(BERPS_POOL_CONTRACTS['main'], BERA_REWARDS_VAULT_ABI)
 
 
     async def approve_honey(self):
