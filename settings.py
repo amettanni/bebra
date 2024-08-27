@@ -13,7 +13,7 @@ class MainSettings:
 
     SLEEP_INSIDE_MODULE = [30, 120]
 
-    GAS_LIMIT = 500000
+    GAS_LIMIT = 1000000
 
     GAS_PRICE = 0.001250
 
