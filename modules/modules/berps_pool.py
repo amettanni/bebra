@@ -15,7 +15,7 @@ class BerpsPool(Account):
         try:
             self.log_send(f'Approve HONEY on Berps Pool.')
 
-            return await self.approve(BERPS_POOL_CONTRACTS['HONEY'], BERPS_VAULT_APPROVE_ABI)
+            return await self.approve(BERPS_POOL_CONTRACTS['HONEY'], BERPS_VAULT_APPROVE_ABI, BERPS_POOL_CONTRACTS['BHONEY'])
         
         except Exception as e:
             self.log_send(f'Error in module «{__class__.__name__}»: {e}', status='error')
@@ -50,7 +50,7 @@ class BerpsPool(Account):
         try:
             self.log_send(f'Approve bHONEY on Berps Pool.')
 
-            return await self.approve(BERPS_POOL_CONTRACTS['BHONEY'], BERPS_POOL_ABI)
+            return await self.approve(BERPS_POOL_CONTRACTS['BHONEY'], BERPS_POOL_ABI, BERPS_POOL_CONTRACTS['main'])
         
         except Exception as e:
             self.log_send(f'Error in module «{__class__.__name__}»: {e}', status='error')

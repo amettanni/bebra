@@ -15,7 +15,7 @@ class Bend(Account):
         try:
             self.log_send(f'Approve WBTC on Bend Pool.')
 
-            return await self.approve(BEND_POOL_CONTRACTS['WBTC'], BEND_ATOKEN_ABI)
+            return await self.approve(BEND_POOL_CONTRACTS['WBTC'], BEND_ATOKEN_ABI, BEND_POOL_CONTRACTS['main'])
         
         except Exception as e:
             self.log_send(f'Error in module «{__class__.__name__}»: {e}', status='error')
@@ -55,7 +55,7 @@ class Bend(Account):
         try:
             self.log_send(f'Approve WETH on Bend Pool.')
 
-            return await self.approve(BEND_POOL_CONTRACTS['WETH'], BEND_ATOKEN_ABI)
+            return await self.approve(BEND_POOL_CONTRACTS['WETH'], BEND_ATOKEN_ABI, BEND_POOL_CONTRACTS['main'])
         
         except Exception as e:
             self.log_send(f'Error in module «{__class__.__name__}»: {e}', status='error')

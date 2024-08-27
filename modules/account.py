@@ -116,14 +116,16 @@ class Account:
         
     #     return amount_approved
     
-    async def approve(self, token_address: str, abi):
+    async def approve(self, token_address: str, abi, pool_address: str = None):
         contract = self.w3.eth.contract(address=token_address, abi=abi)
 
         self.log_send('Make approve.')
 
         tx_data = await self.get_tx_data()
-
-        tx = await contract.functions.approve(self.address, MAX_APPROVE).build_transaction(tx_data)
+        if pool_address:
+            tx = await contract.functions.approve(pool_address, MAX_APPROVE).build_transaction(tx_data)
+        else:
+            tx = await contract.functions.approve(self.address, MAX_APPROVE).build_transaction(tx_data)
 
         await async_sleep(5, 15, logs=False)
 
