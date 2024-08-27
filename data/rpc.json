@@ -1,0 +1,8 @@
+{
+    "Berachain bArtio": {
+        "rpc": "https://bartio.rpc.berachain.com/",
+        "explorer": "https://bartio.beratrail.io/",
+        "token": "BERA",
+        "chain_id": 80084
+    }
+}
