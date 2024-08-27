@@ -11,7 +11,7 @@ from utils.config import BEX_POOLS
 async def low_swap_bera_to_random_coin(account_id, key):
     min_percent = ms.Bex.LOW_PERCENTS[0]
     max_percent = ms.Bex.LOW_PERCENTS[1]
-    coin = random.choice(BEX_POOLS.keys())
+    coin = random.choice(list(BEX_POOLS.keys()))
 
     bex = Bex(account_id, key)
     await bex.swap_bera_to_coin(min_percent, max_percent, coin)
