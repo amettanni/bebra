@@ -17,10 +17,12 @@ async def start_tasks(data: list, module: Callable = None):
 
 
 async def run_main_proccesses(account_id: int, key: str, module: Callable = None):
-    await async_sleep(
-        SETTINGS.START_PERIOD[0], SETTINGS.START_PERIOD[1],
-        True, account_id, key, 'before starting work'
-    )
+    # ignore for the first wallet
+    if account_id > 1:
+        await async_sleep(
+            SETTINGS.START_PERIOD[0], SETTINGS.START_PERIOD[1],
+            True, account_id, key, 'before starting work'
+        )
     
     if module:
         await run_module(module, account_id, key)
