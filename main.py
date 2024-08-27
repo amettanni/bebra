@@ -41,12 +41,14 @@ def show_submenu(selected_mode):
 
 def main():
 
-    account_number_to_start_from = input('Enter number of the account to start from (Leave empty for default) :       ')
-    if account_number_to_start_from != '':
-        account_number_to_start_from = int(account_number_to_start_from)
-        data = get_wallets(account_number_to_start_from)
-    else:
-        data = get_wallets()
+    # account_number_to_start_from = input('Enter number of the account to start from (Leave empty for default) :       ')
+    # if account_number_to_start_from != '':
+    #     account_number_to_start_from = int(account_number_to_start_from)
+    #     data = get_wallets(account_number_to_start_from)
+    # else:
+    #     data = get_wallets()
+
+    data = get_wallets()
 
     selected_mode = questionary.select(
         message='Select a mode to start the software.',
