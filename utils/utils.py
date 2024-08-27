@@ -38,6 +38,8 @@ def get_wallets(number_to_start_from: int = 1):
         sys.exit()
     
     # accounts = ACCOUNTS[number_to_start_from-1:]
+    if SETTINGS.RANDOM_WALLETS:
+        ACCOUNTS = random.shuffle(ACCOUNTS)
 
     wallets = [
         {
