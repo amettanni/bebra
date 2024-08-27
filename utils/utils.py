@@ -39,15 +39,13 @@ def get_wallets(number_to_start_from: int = 0):
     
     # accounts = ACCOUNTS[number_to_start_from-1:]
     if SETTINGS.RANDOM_WALLETS:
-        accounts = random.shuffle(ACCOUNTS)
-    else:
-        accounts = ACCOUNTS
+        random.shuffle(ACCOUNTS)
 
     wallets = [
         {
             'id': _id+1,
             'key': key,
-        } for _id, key in enumerate(accounts, start=number_to_start_from)
+        } for _id, key in enumerate(ACCOUNTS, start=number_to_start_from)
     ]
 
     return wallets
