@@ -32,20 +32,22 @@ def get_wallet_address(key: str) -> str:
     account = eth_account.Account.from_key(key)
     return account.address
 
-def get_wallets(number_to_start_from: int = 1):
+def get_wallets(number_to_start_from: int = 0):
     if len(ACCOUNTS) < 1:
         logger.error('It seems you forgot to enter the wallets.')
         sys.exit()
     
     # accounts = ACCOUNTS[number_to_start_from-1:]
     if SETTINGS.RANDOM_WALLETS:
-        ACCOUNTS = random.shuffle(ACCOUNTS)
+        accounts = random.shuffle(ACCOUNTS)
+    else:
+        accounts = ACCOUNTS
 
     wallets = [
         {
-            'id': _id,
+            'id': _id+1,
             'key': key,
-        } for _id, key in enumerate(ACCOUNTS, start=number_to_start_from)
+        } for _id, key in enumerate(accounts, start=number_to_start_from)
     ]
 
     return wallets
