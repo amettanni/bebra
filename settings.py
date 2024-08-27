@@ -5,11 +5,11 @@ class MainSettings:
 
     USE_PROXY = True
 
-    START_PERIOD = [60, 180]
+    START_PERIOD = [2000, 3000]
     
     REPEATS_PER_WALLET = 1
 
-    SLEEP_AFTER_WORK = [2000, 3000]
+    SLEEP_AFTER_WORK = [500, 1000]
 
     SLEEP_INSIDE_MODULE = [30, 120]
 
