@@ -4,3 +4,7 @@ __pycache__
 logs.log
 test.ipynb
 accounts.txt
+proxy.txt
+proxy_counter.txt
+remove_https_from_proxies.py
+faucet_allowance.json

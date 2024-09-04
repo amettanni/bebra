@@ -17,7 +17,7 @@ from utils.modules import *
 #         questionary.Choice('❌ Exit', 'exit'),
 #     ],
 #     'one_selected_module': [
-#         # questionary.Choice('● Swap on 1inch', swap_inch),
+#         questionary.Choice('● Get test $BERA tokens', mint_berachain_tokens),
 #         questionary.Choice('● Swap from Bera to WBTC', swap_bera_wbtc),
 #         questionary.Choice('● Low Swap from Bera to Coin', low_swap_bera_to_random_coin),
 #         questionary.Choice('● Bend Supply WBTC and Borrow HONEY', bend_supply_wbtc_and_borrow_honey ),
@@ -60,11 +60,15 @@ def main():
     # if selected_mode in submenus:
     #     selected_mode = show_submenu(selected_mode)
     #     asyncio.run(start_tasks(data, selected_mode))
-    # # elif selected_mode == 'balance-checker': asyncio.run(run_check_balance(data))
     # elif selected_mode == 'exit': sys.exit()
     # else: asyncio.run(start_tasks(data, None))
 
-    asyncio.run(start_tasks(data, None))
+
+    # normal script run for activities
+    # asyncio.run(start_tasks(data, None))
+    
+    # faucet scipt run 
+    # asyncio.run(start_tasks(data, mint_berachain_tokens))
 
 if __name__ == '__main__':
     logger.add('logs.log')

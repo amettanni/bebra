@@ -7,6 +7,9 @@ from web3 import AsyncWeb3
 from web3.middleware import async_geth_poa_middleware
 from web3.types import TxParams
 from web3.exceptions import TransactionNotFound
+from aiohttp import ClientSession
+from aiohttp_socks import ProxyConnector
+import ssl
 
 from settings import MainSettings as SETTINGS
 from utils.config import  MAX_APPROVE, RPC, ERC_20_ABI
@@ -14,7 +17,7 @@ from utils.utils import async_sleep
 
 
 class Account:
-    def __init__(self, account_id: int, private_key: str, proxy: str | None = None, chain: str = 'Berachain bArtio') -> None:
+    def __init__(self, account_id: int, private_key: str, use_proxy: bool = False, chain: str = 'Berachain bArtio') -> None:
         self.account_id = account_id
         self.private_key = private_key
         
@@ -23,9 +26,20 @@ class Account:
         self.explorer = RPC[chain]['explorer']
         self.rpc = RPC[chain]['rpc']
 
-        self.proxy = f"http://{proxy}" if proxy else ""
-        self.request_kwargs = {'proxy': f'http://{proxy}'} if proxy else {}
+        if use_proxy:
+            self.proxy_counter = self.get_proxy_counter()
+            self.proxy = self.get_proxy_by_number(self.proxy_counter)
+            self.update_proxy_counter(self.proxy_counter + 1)
+            self.session = ClientSession(connector=ProxyConnector.from_url(f'http://{self.proxy}', ssl=ssl.create_default_context(), verify_ssl=True))
+            self.session.headers.update({
+                'User-Agent': self.get_user_agent()
+            })
+            self.request_kwargs = {"proxy": f"http://{self.proxy}", "verify_ssl": False}
             
+            
+        else:
+            self.request_kwargs = {"verify_ssl": False}
+
         self.w3 = AsyncWeb3(
             AsyncWeb3.AsyncHTTPProvider(self.rpc),
             middlewares=[async_geth_poa_middleware],
@@ -42,6 +56,29 @@ class Account:
             'debug'     : logger.debug
         }
     
+    @staticmethod
+    def get_user_agent():
+        random_version = f"{random.uniform(520, 540):.2f}"
+        return (f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/{random_version}'
+                f' (KHTML, like Gecko) Chrome/121.0.0.0 Safari/{random_version} Edg/121.0.0.0')
+    
+    @staticmethod
+    def get_proxy_counter():
+        with open('proxy_counter.txt', 'r') as file:
+            proxy_counter = file.read().strip()
+            return int(proxy_counter)
+        
+    @staticmethod
+    def update_proxy_counter(n: int):
+        with open('proxy_counter.txt', 'w') as file:
+            file.write(str(n))
+        
+    @staticmethod
+    def get_proxy_by_number(n: int) -> str:
+        with open('proxy.txt', 'r') as file:
+            PROXIES = [row.strip() for row in file]
+            return PROXIES[n]
+
     async def make_request(
         self, method: str = 'GET', url: str = None, headers: dict = None,
         params: dict = None, data: str = None, json: dict = None

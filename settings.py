@@ -5,7 +5,11 @@ class MainSettings:
 
     USE_PROXY = True
 
+    INFINITE_MODE = True
+
     START_PERIOD = [2000, 3000]
+
+    FAUCET_SLEEP = [60, 60*20]
     
     REPEATS_PER_WALLET = 1
 
@@ -16,6 +20,8 @@ class MainSettings:
     GAS_LIMIT = 1000000
 
     GAS_PRICE = 0.001250
+
+    TWO_CAPTCHA_API_KEY = ""
 
     CUSTOM_ROUTES_MODULES = [
         ['low_swap_bera_to_random_coin', 'swap_bera_wbtc', 'bend_supply_wbtc_and_borrow_honey'],

@@ -10,19 +10,22 @@ from utils.wrappers import repeats
 
 
 async def start_tasks(data: list, module: Callable = None):
-    tasks = []
+    while True:
+        for account in data:
+            await run_main_proccesses(account.get('id'), account.get('key'), module)
 
-    for account in data:
-        await run_main_proccesses(account.get('id'), account.get('key'), module)
+        if SETTINGS.INFINITE_MODE == False:
+            break
 
 
 async def run_main_proccesses(account_id: int, key: str, module: Callable = None):
     # ignore for the first wallet
     if account_id > 1:
-        await async_sleep(
-            SETTINGS.START_PERIOD[0], SETTINGS.START_PERIOD[1],
-            True, account_id, key, 'before starting work'
-        )
+        if module.__name__ != 'mint_berachain_tokens':
+            await async_sleep(
+                SETTINGS.START_PERIOD[0], SETTINGS.START_PERIOD[1],
+                True, account_id, key, 'before starting work'
+            )
     
     if module:
         await run_module(module, account_id, key)
