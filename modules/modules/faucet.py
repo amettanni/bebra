@@ -91,8 +91,12 @@ class Faucet(RequestClient):
 
         url = 'https://bartio-faucet.berachain-devnet.com/api/claim'
 
-        task_id = await self.create_task_for_captcha()
-        captcha_key = await self.get_captcha_key(task_id)
+        try:
+            task_id = await self.create_task_for_captcha()
+            captcha_key = await self.get_captcha_key(task_id)
+        except Exception as e:
+            self.account.log_send(f"Can't create and solve captch. {e}", status='error')
+            return False
 
         headers = {
             "Accept": "*/*",
