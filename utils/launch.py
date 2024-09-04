@@ -20,12 +20,11 @@ async def start_tasks(data: list, module: Callable = None):
 
 async def run_main_proccesses(account_id: int, key: str, module: Callable = None):
     # ignore for the first wallet
-    if account_id > 1:
-        if module.__name__ != 'mint_berachain_tokens':
-            await async_sleep(
-                SETTINGS.START_PERIOD[0], SETTINGS.START_PERIOD[1],
-                True, account_id, key, 'before starting work'
-            )
+    if account_id > 1 and module is None:
+        await async_sleep(
+            SETTINGS.START_PERIOD[0], SETTINGS.START_PERIOD[1],
+            True, account_id, key, 'before starting work'
+        )
     
     if module:
         await run_module(module, account_id, key)
