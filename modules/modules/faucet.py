@@ -14,15 +14,15 @@ class Faucet(RequestClient):
     def check_faucet_allowance(self) -> bool:
         with open('faucet_allowance.json', 'r') as file:
             faucet_allowance = json.load(file)
-        if self.account.address in faucet_allowance:
-            faucet_last_time_used_str = faucet_allowance[self.account.address]
-            faucet_last_time_used = datetime.fromisoformat(faucet_last_time_used_str)
-            current_time = datetime.now()
-            time_difference = current_time - faucet_last_time_used
-            if time_difference > timedelta(hours=8):
-                return True
-            else:
-                return False
+            if self.account.address in faucet_allowance:
+                faucet_last_time_used_str = faucet_allowance[self.account.address]
+                faucet_last_time_used = datetime.fromisoformat(faucet_last_time_used_str)
+                current_time = datetime.now()
+                time_difference = current_time - faucet_last_time_used
+                if time_difference > timedelta(hours=8):
+                    return True
+                else:
+                    return False
         return True
         
     def update_faucet_usage_time(self) -> None:
@@ -123,15 +123,14 @@ class Faucet(RequestClient):
             "address": f"{self.account.address}"
         }
 
-        await self.make_request(method="POST", url=url, params=params, json=params, headers=headers)
-        self.account.log_send(f'$BERA was successfully claimed on faucet', status='success')
+        try:
+            await self.make_request(method="POST", url=url, params=params, json=params, headers=headers)
+            self.account.log_send(f'$BERA was successfully claimed on faucet', status='success')
 
-        await self.account.session.close()
-        self.update_faucet_usage_time()
-
-        await async_sleep(
-            MainSettings.FAUCET_SLEEP[0], MainSettings.FAUCET_SLEEP[1],
-            True, self.account.account_id, self.account.private_key, 'after claiming test $BERA'
-        )
+            await self.account.session.close()
+            self.update_faucet_usage_time()
+        except Exception as e:
+            self.account.log_send(f"Error happend while claiming $BERA from faucet. {e}", status='error')
+            return False
 
         return True

@@ -33,7 +33,9 @@ class RequestClient(ABC):
         errors = None
 
         total_time = 0
-        timeout = 360
+        timeout = 60
+        retry_count = 0  # Счетчик попыток
+        max_retries = 5  # Максимальное количество попыток
         while True:
             try:
                 async with self.account.session.request(
@@ -41,10 +43,14 @@ class RequestClient(ABC):
                 ) as response:
                     if response.status in [200, 201]:
                         data = await response.json()
+                        retry_count += 1
                         if isinstance(data, dict):
                             errors = data.get('errors')
                         elif isinstance(data, list) and isinstance(data[0], dict):
                             errors = data[0].get('errors')
+
+                        if retry_count > max_retries:
+                            raise SoftwareException(f"Max retries reached {self.__class__.__name__}({module_name}) API: {url}")
 
                         if not errors:
                             return data
