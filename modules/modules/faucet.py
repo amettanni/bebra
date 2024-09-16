@@ -132,5 +132,10 @@ class Faucet(RequestClient):
         except Exception as e:
             self.account.log_send(f"Error happend while claiming $BERA from faucet. {e}", status='error')
             return False
+        
+        await async_sleep(
+            MainSettings.FAUCET_SLEEP[0], MainSettings.FAUCET_SLEEP[1],
+            True, self.account.account_id, self.account.private_key, 'after claiming test $BERA'
+        )
 
         return True
