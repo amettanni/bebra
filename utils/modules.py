@@ -13,13 +13,16 @@ from utils.config import BEX_POOLS
 async def mint_berachain_tokens(account_id, key):
     account = Account(account_id, key, use_proxy=True)
     worker = Faucet(account)
-    if worker.check_faucet_allowance():
-        return await worker.claim_berachain_tokens()
-    else:
-        await async_sleep(
-            MainSettings.SLEEP_INSIDE_MODULE[0], MainSettings.SLEEP_INSIDE_MODULE[1], 
-            True, account.account_id, account.private_key, 'less than 8 hours from previous $BERA claiming'
-        )
+    try:
+        if worker.check_faucet_allowance():
+            return await worker.claim_berachain_tokens()
+        else:
+            await async_sleep(
+                MainSettings.SLEEP_INSIDE_MODULE[0], MainSettings.SLEEP_INSIDE_MODULE[1], 
+                True, account.account_id, account.private_key, 'less than 8 hours from previous $BERA claiming'
+            )
+    except Exception as e:
+        account.log_send(f'Unexpected error has happend while minting faucet BERA tokens. {e}', status='error')
 
 
 async def low_swap_bera_to_random_coin(account_id, key):

@@ -89,7 +89,7 @@ class Faucet(RequestClient):
 
         self.account.log_send(f'Claiming $BERA on faucet')
 
-        url = 'https://bartio-faucet.berachain-devnet.com/api/claim'
+        url = 'https://bartiofaucet.berachain.com/api/claim'
 
         try:
             task_id = await self.create_task_for_captcha()

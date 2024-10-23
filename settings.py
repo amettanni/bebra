@@ -19,7 +19,7 @@ class MainSettings:
 
     GAS_LIMIT = 1000000
 
-    GAS_PRICE = 0.001250
+    GAS_PRICE = 65
 
     TWO_CAPTCHA_API_KEY = ""
 

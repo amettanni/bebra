@@ -83,16 +83,19 @@ class Account:
         self, method: str = 'GET', url: str = None, headers: dict = None,
         params: dict = None, data: str = None, json: dict = None
     ):
-        async with ClientSession() as session:
-            async with session.request(
-                method=method, url=url, headers=headers, data=data, params=params, json=json
-            ) as response:
-                data = await response.json()
-                if response.status == 200:
-                    return data
-                else:
-                    await async_sleep(1, 3, logs=False)
-                    await self.make_request(method=method, url=url, headers=headers, data=data, params=params, json=json)
+        try:
+            async with ClientSession() as session:
+                async with session.request(
+                    method=method, url=url, headers=headers, data=data, params=params, json=json
+                ) as response:
+                    data = await response.json()
+                    if response.status == 200:
+                        return data
+                    else:
+                        await async_sleep(1, 3, logs=False)
+                        await self.make_request(method=method, url=url, headers=headers, data=data, params=params, json=json)
+        except Exception as e:
+            self.log_send(f'Request has failed!. {e}', status='error')
     
     def log_send(self, msg: str, status: str = 'info'):
         self.LOG_LEVELS[status](f'Account №{self.account_id} | {self.address} | {msg}')
