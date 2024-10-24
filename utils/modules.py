@@ -15,7 +15,7 @@ async def mint_berachain_tokens(account_id, key):
     worker = Faucet(account)
     try:
         if worker.check_faucet_allowance():
-            return await worker.claim_berachain_tokens()
+            await worker.claim_berachain_tokens()
         else:
             await async_sleep(
                 MainSettings.SLEEP_INSIDE_MODULE[0], MainSettings.SLEEP_INSIDE_MODULE[1], 
