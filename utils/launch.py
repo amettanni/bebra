@@ -7,13 +7,19 @@ from utils.modules import *
 from utils.utils import async_sleep, remove_wallet_from_files
 from settings import MainSettings as SETTINGS
 from utils.wrappers import repeats
+import traceback
 
 
 async def start_tasks(data: list, module: Callable = None):
     while True:
         for account in data:
-            await run_main_proccesses(account.get('id'), account.get('key'), module)
-
+            try:
+                await run_main_proccesses(account.get('id'), account.get('key'), module)
+            except Exception as e:
+                # Логируем любую ошибку на уровне основной задачи
+                print(f"Ошибка в процессе работы с аккаунтом {account.get('id')}: {e}")
+                traceback.print_exc()
+        
         if SETTINGS.INFINITE_MODE == False:
             break
 
@@ -41,6 +47,11 @@ async def run_main_proccesses(account_id: int, key: str, module: Callable = None
 
 @repeats
 async def run_module(module: Callable, account_id: int, key: str):
-    succcess_bridge = await module(account_id, key)
-    if not succcess_bridge: return False
-    return True
+    try:
+        succcess_bridge = await module(account_id, key)
+        if not succcess_bridge: return False
+        return True
+    except Exception as e:
+        print(f"Ошибка в run_module для аккаунта {account_id}: {e}")
+        traceback.print_exc()
+        return False
